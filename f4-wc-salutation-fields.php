@@ -1,15 +1,15 @@
 <?php
 
 /*
-Plugin Name: F4 WooCommerce Salutation
-Plugin URI: https://github.com/faktorvier/f4-wc-salutation
+Plugin Name: F4 WooCommerce Salutation Fields
+Plugin URI: https://github.com/faktorvier/f4-woocommerce-salutation-fields
 Description: Adds salutation fields to the WooCommerce billing and shipping address.
 Version: 1.0.0
 Author: FAKTOR VIER
 Author URI: https://faktorvier.ch
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Text Domain: f4-wc-salutation
+Text Domain: f4-wc-salutation-fields
 Domain Path: /Core/Lang
 WC requires at least: 3.0
 WC tested up to: 3.5.1
@@ -34,7 +34,7 @@ if(!defined('ABSPATH')) exit; // don't access directly
 define('F4_WCSF_VERSION', '1.0.0');
 define('F4_WCSF_PRO', false);
 
-define('F4_WCSF_SLUG', 'f4-wc-salutation');
+define('F4_WCSF_SLUG', 'f4-wc-salutation-fields');
 define('F4_WCSF_TD', F4_WCSF_SLUG);
 define('F4_WCSF_MAIN_FILE', __FILE__);
 define('F4_WCSF_BASENAME', plugin_basename(F4_WCSF_MAIN_FILE));

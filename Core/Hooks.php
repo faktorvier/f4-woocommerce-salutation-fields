@@ -69,7 +69,7 @@ class Hooks {
 	 */
 	public static function load_textdomain() {
 		$locale = apply_filters('plugin_locale', get_locale(), F4_WCSF_TD);
-		load_plugin_textdomain('f4-wc-salutation', false, plugin_basename(F4_WCSF_PATH . 'Core/Lang') . '/');
+		load_plugin_textdomain('f4-wc-salutation-fields', false, plugin_basename(F4_WCSF_PATH . 'Core/Lang') . '/');
 	}
 
 	/**
