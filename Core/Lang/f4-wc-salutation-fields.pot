@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: F4 WooCommerce Salutation Fields\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-03 22:39+0000\n"
+"POT-Creation-Date: 2018-12-03 23:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -14,34 +14,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
 "X-Loco-Version: 2.2.0; wp-4.9.8"
-
-#. Description of the plugin
-msgid "Adds salutation fields to the WooCommerce billing and shipping address."
-msgstr ""
-
-#: Core/Hooks.php:338 Core/Hooks.php:468
-msgid "Billing Salutation"
-msgstr ""
-
-#. Name of the plugin
-msgid "F4 WooCommerce Salutation Fields"
-msgstr ""
-
-#. Author of the plugin
-msgid "FAKTOR VIER"
-msgstr ""
-
-#: Core/Hooks.php:323
-msgid "Field type"
-msgstr ""
-
-#. Author URI of the plugin
-msgid "https://faktorvier.ch"
-msgstr ""
-
-#. URI of the plugin
-msgid "https://github.com/faktorvier/f4-woocommerce-salutation-fields"
-msgstr ""
 
 #: Core/Hooks.php:110
 msgid "Mr."
@@ -59,6 +31,26 @@ msgstr ""
 msgid "Salutation fields"
 msgstr ""
 
-#: Core/Hooks.php:338 Core/Hooks.php:470
+#: Core/Hooks.php:468
+msgid "Billing Salutation"
+msgstr ""
+
+#: Core/Hooks.php:470
 msgid "Shipping Salutation"
+msgstr ""
+
+#. Name of the plugin
+msgid "F4 WooCommerce Salutation Fields"
+msgstr ""
+
+#. Description of the plugin
+msgid "Adds salutation fields to the WooCommerce billing and shipping address."
+msgstr ""
+
+#. URI of the plugin
+msgid "https://github.com/faktorvier/f4-woocommerce-salutation-fields"
+msgstr ""
+
+#. Author of the plugin
+msgid "FAKTOR VIER"
 msgstr ""
