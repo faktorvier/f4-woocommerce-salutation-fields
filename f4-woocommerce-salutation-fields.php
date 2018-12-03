@@ -34,8 +34,7 @@ if(!defined('ABSPATH')) exit; // don't access directly
 define('F4_WCSF_VERSION', '1.0.0');
 define('F4_WCSF_PRO', false);
 
-define('F4_WCSF_SLUG', 'f4-wc-salutation-fields');
-define('F4_WCSF_TD', F4_WCSF_SLUG);
+define('F4_WCSF_SLUG', 'f4-woocommerce-salutation-fields');
 define('F4_WCSF_MAIN_FILE', __FILE__);
 define('F4_WCSF_BASENAME', plugin_basename(F4_WCSF_MAIN_FILE));
 define('F4_WCSF_PATH', dirname(F4_WCSF_MAIN_FILE) . DIRECTORY_SEPARATOR);

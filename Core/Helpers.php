@@ -34,6 +34,67 @@ class Helpers {
 
 		return $info_value;
 	}
+
+	/**
+	 * Insert one or more elements before a specific key
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @static
+	 * @param array $array The original array
+	 * @param string|array $search_key One or more keys to insert the values before
+	 * @param array $target_values The associative array to insert
+	 * @return array The new array
+	 */
+	public static function insert_before_key($array, $search_key, $target_values) {
+		$array_new = array();
+		$already_inserted = false;
+
+		if(!is_array($search_key)) {
+			$search_key = array($search_key);
+		}
+
+		foreach($array as $array_key => $array_value) {
+			if(in_array($array_key, $search_key) && !$already_inserted) {
+				foreach($target_values as $target_key => $target_value) {
+					$array_new[$target_key] = $target_value;
+				}
+
+				$already_inserted = true;
+			}
+
+			$array_new[$array_key] = $array_value;
+		}
+
+		return $array_new;
+	}
+
+	/**
+	 * Insert one or more elements before a specific key
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @static
+	 * @param array $fields The fields array
+	 * @param string|array $search_key One or more keys to get the priority
+	 * @return integer The priority
+	 */
+	public static function get_field_priority($fields, $search_key) {
+		$priority = 0;
+
+		if(!is_array($search_key)) {
+			$search_key = array($search_key);
+		}
+
+		foreach($fields as $name => $field) {
+			if(in_array($name, $search_key)) {
+				$priority = $field['priority'];
+				break;
+			}
+		}
+
+		return $priority;
+	}
 }
 
 ?>
