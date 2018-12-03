@@ -12,16 +12,17 @@ namespace F4\WCSF\Core;
  */
 class Hooks {
 	/**
+	 * @var array $options All salutation options (key value pairs)
 	 * @var array $settings All the module settings
 	 */
-	protected static $settings = array(
+	protected static $options = null;
+	protected static $settings = array();
+	protected static $default_settings = array(
 		'billing_field_enabled' => 'required',
 		'shipping_field_enabled' => 'required',
 		'field_type' => 'select',
 		'option_values' => array('', 'mr', 'mrs')
 	);
-
-	protected static $options = null;
 
 	/**
 	 * Initialize the hooks
@@ -29,8 +30,6 @@ class Hooks {
 	 * @since 1.0.0
 	 * @access public
 	 * @static
-	 *
-	 * @done
 	 */
 	public static function init() {
 		add_action('plugins_loaded', __NAMESPACE__ . '\\Hooks::core_loaded');
@@ -49,32 +48,32 @@ class Hooks {
 
 		// Load settings
 		add_action('init', __NAMESPACE__ . '\\Hooks::load_textdomain');
-		add_action('init', __NAMESPACE__ . '\\Hooks::load_settings', 99);
+		add_action('init', __NAMESPACE__ . '\\Hooks::load_settings', 11);
 
 		// Checkout and account fields
-		add_filter('woocommerce_checkout_fields', __NAMESPACE__ . '\\Hooks::add_checkout_fields', 99);
-		add_filter('woocommerce_billing_fields', __NAMESPACE__ . '\\Hooks::add_address_fields', 99, 2);
-		add_filter('woocommerce_shipping_fields', __NAMESPACE__ . '\\Hooks::add_address_fields', 99, 2);
-		add_filter('woocommerce_my_account_my_address_formatted_address', __NAMESPACE__ . '\\Hooks::add_field_to_formatted_my_account_address', 99, 3);
+		add_filter('woocommerce_checkout_fields', __NAMESPACE__ . '\\Hooks::add_checkout_fields');
+		add_filter('woocommerce_billing_fields', __NAMESPACE__ . '\\Hooks::add_address_fields', 10, 2);
+		add_filter('woocommerce_shipping_fields', __NAMESPACE__ . '\\Hooks::add_address_fields', 10, 2);
+		add_filter('woocommerce_my_account_my_address_formatted_address', __NAMESPACE__ . '\\Hooks::add_field_to_formatted_my_account_address', 10, 3);
 
 		// Formatted address
-		add_filter('woocommerce_order_formatted_billing_address', __NAMESPACE__ . '\\Hooks::add_field_to_formatted_address', 99, 2);
-		add_filter('woocommerce_order_formatted_shipping_address', __NAMESPACE__ . '\\Hooks::add_field_to_formatted_address', 99, 2);
-		add_filter('woocommerce_localisation_address_formats', __NAMESPACE__ . '\\Hooks::append_field_to_localisation_address_formats', 99);
-		add_filter('woocommerce_formatted_address_replacements', __NAMESPACE__ . '\\Hooks::replace_field_in_formatted_address', 99, 2);
+		add_filter('woocommerce_order_formatted_billing_address', __NAMESPACE__ . '\\Hooks::add_field_to_formatted_address', 10, 2);
+		add_filter('woocommerce_order_formatted_shipping_address', __NAMESPACE__ . '\\Hooks::add_field_to_formatted_address', 10, 2);
+		add_filter('woocommerce_localisation_address_formats', __NAMESPACE__ . '\\Hooks::append_field_to_localisation_address_formats', 10);
+		add_filter('woocommerce_formatted_address_replacements', __NAMESPACE__ . '\\Hooks::replace_field_in_formatted_address', 10, 2);
 
 		// Backend
-		add_filter('woocommerce_get_settings_account', __NAMESPACE__ . '\\Hooks::add_settings_fields', 99);
-		add_filter('woocommerce_customer_meta_fields', __NAMESPACE__ . '\\Hooks::add_customer_meta_fields', 99);
-		add_filter('woocommerce_admin_billing_fields', __NAMESPACE__ . '\\Hooks::add_admin_order_fields', 99);
-		add_filter('woocommerce_admin_shipping_fields', __NAMESPACE__ . '\\Hooks::add_admin_order_fields', 99);
+		add_filter('woocommerce_get_settings_account', __NAMESPACE__ . '\\Hooks::add_settings_fields');
+		add_filter('woocommerce_customer_meta_fields', __NAMESPACE__ . '\\Hooks::add_customer_meta_fields');
+		add_filter('woocommerce_admin_billing_fields', __NAMESPACE__ . '\\Hooks::add_admin_order_fields');
+		add_filter('woocommerce_admin_shipping_fields', __NAMESPACE__ . '\\Hooks::add_admin_order_fields');
 		add_filter('plugin_action_links_' . F4_WCSF_BASENAME, __NAMESPACE__ . '\\Hooks::add_settings_link_to_plugin_list');
 
 		// Privacy
-		add_filter('woocommerce_privacy_export_customer_personal_data_props', __NAMESPACE__ . '\\Hooks::privacy_customer_personal_data_props', 99, 2);
-		add_filter('woocommerce_privacy_erase_customer_personal_data_props', __NAMESPACE__ . '\\Hooks::privacy_customer_personal_data_props', 99, 2);
-		add_filter('woocommerce_privacy_export_customer_personal_data_prop_value', __NAMESPACE__ . '\\Hooks::privacy_export_customer_personal_data_prop_value', 99, 3);
-		add_filter('woocommerce_privacy_erase_customer_personal_data_prop', __NAMESPACE__ . '\\Hooks::privacy_erase_customer_personal_data_prop', 99, 3);
+		add_filter('woocommerce_privacy_export_customer_personal_data_props', __NAMESPACE__ . '\\Hooks::privacy_customer_personal_data_props', 10, 2);
+		add_filter('woocommerce_privacy_erase_customer_personal_data_props', __NAMESPACE__ . '\\Hooks::privacy_customer_personal_data_props', 10, 2);
+		add_filter('woocommerce_privacy_export_customer_personal_data_prop_value', __NAMESPACE__ . '\\Hooks::privacy_export_customer_personal_data_prop_value', 10, 3);
+		add_filter('woocommerce_privacy_erase_customer_personal_data_prop', __NAMESPACE__ . '\\Hooks::privacy_erase_customer_personal_data_prop', 10, 3);
 	}
 
 	/**
@@ -83,8 +82,6 @@ class Hooks {
 	 * @since 1.0.0
 	 * @access public
 	 * @static
-	 *
-	 * @done
 	 */
 	public static function load_textdomain() {
 		$locale = apply_filters('plugin_locale', get_locale(), 'f4-wc-salutation-fields');
@@ -97,8 +94,7 @@ class Hooks {
 	 * @since 1.0.0
 	 * @access public
 	 * @static
-	 *
-	 * @done
+	 * @return array An associative array with the salutation options, key/value pairs
 	 */
 	public static function get_options() {
 		if(!self::$options) {
@@ -132,14 +128,12 @@ class Hooks {
 	 * @since 1.0.0
 	 * @access public
 	 * @static
-	 *
-	 * @done
+	 * @param string $key The option key
+	 * @return string The translated label for the requested value
 	 */
-	public static function get_option_label($option) {
+	public static function get_option_label($key) {
 		$options = self::get_options();
-		$label = !empty($option) && isset($options[$option]) ? $options[$option] : '';
-
-		return $label;
+		return !empty($option) && isset($options[$key]) ? $options[$key] : '';
 	}
 
 	/**
@@ -148,18 +142,17 @@ class Hooks {
 	 * @since 1.0.0
 	 * @access public
 	 * @static
-	 *
-	 * @done
 	 */
 	public static function load_settings() {
-		$settings = array(
-			'billing_field_enabled' => get_option('woocommerce_enable_billing_field_salutation', self::$settings['billing_field_enabled']),
-			'shipping_field_enabled' => get_option('woocommerce_enable_shipping_field_salutation', self::$settings['shipping_field_enabled']),
-			'field_type' => get_option('woocommerce_salutation_field_type', self::$settings['field_type']),
-			'option_values' => get_option('woocommerce_salutation_options', self::$settings['option_values'])
+		self::$settings = apply_filters(
+			'F4/WCSF/load_settings',
+			array(
+				'billing_field_enabled' => get_option('woocommerce_enable_billing_field_salutation', self::$default_settings['billing_field_enabled']),
+				'shipping_field_enabled' => get_option('woocommerce_enable_shipping_field_salutation', self::$default_settings['shipping_field_enabled']),
+				'field_type' => get_option('woocommerce_salutation_field_type', self::$default_settings['field_type']),
+				'option_values' => get_option('woocommerce_salutation_options', self::$default_settings['option_values'])
+			)
 		);
-
-		self::$settings = apply_filters('F4/WCSF/load_settings', $settings);
 	}
 
 	/**
@@ -168,8 +161,6 @@ class Hooks {
 	 * @since 1.0.0
 	 * @access public
 	 * @static
-	 *
-	 * @done
 	 */
 	public static function add_checkout_fields($fields) {
 		foreach(array('billing', 'shipping') as $address_type) {
@@ -201,13 +192,11 @@ class Hooks {
 	}
 
 	/**
-	 * Add fields to edit address form
+	 * Add fields to edit address forms
 	 *
 	 * @since 1.0.0
 	 * @access public
 	 * @static
-	 *
-	 * @done
 	 */
 	public static function add_address_fields($address_fields, $country) {
 		$address_type = doing_filter('woocommerce_billing_fields') ? 'billing' : 'shipping';
@@ -239,13 +228,11 @@ class Hooks {
 	}
 
 	/**
-	 * Add fields to edit address form
+	 * Add fields to edit address dashboard
 	 *
 	 * @since 1.0.0
 	 * @access public
 	 * @static
-	 *
-	 * @done
 	 */
 	public static function add_field_to_formatted_my_account_address($address, $customer_id, $address_type) {
 		if(self::$settings[$address_type . '_field_enabled'] !== 'hidden') {
@@ -256,13 +243,11 @@ class Hooks {
 	}
 
 	/**
-	 * Add field to formatted address
+	 * Add fields to formatted addresses
 	 *
 	 * @since 1.0.0
 	 * @access public
 	 * @static
-	 *
-	 * @done
 	 */
 	public static function add_field_to_formatted_address($address, $order) {
 		$address_type = doing_filter('woocommerce_order_formatted_billing_address') ? 'billing' : 'shipping';
@@ -275,13 +260,11 @@ class Hooks {
 	}
 
 	/**
-	 * Add field to localisation address formats
+	 * Add fields to localisation address formats
 	 *
 	 * @since 1.0.0
 	 * @access public
 	 * @static
-	 *
-	 * @done
 	 */
 	public static function append_field_to_localisation_address_formats($formats) {
 		if(self::$settings['billing_field_enabled'] !== 'hidden' || self::$settings['shipping_field_enabled'] !== 'hidden') {
@@ -304,8 +287,6 @@ class Hooks {
 	 * @since 1.0.0
 	 * @access public
 	 * @static
-	 *
-	 * @done
 	 */
 	public static function replace_field_in_formatted_address($replace, $args) {
 		if(self::$settings['billing_field_enabled'] !== 'hidden' || self::$settings['shipping_field_enabled'] !== 'hidden') {
@@ -326,8 +307,6 @@ class Hooks {
 	 * @since 1.0.0
 	 * @access public
 	 * @static
-	 *
-	 * @done
 	 */
 	public static function add_settings_fields($settings) {
 		// Section start
@@ -341,27 +320,26 @@ class Hooks {
 
 		// Field typ
 		$fields_settings[] = array(
-			'title' => __('Field type', 'f4-wc-salutation-fields'),
+			'title' => __('Type', 'woocommerce'),
 			'desc' => '',
 			'id' => 'woocommerce_salutation_field_type',
 			'type' => 'select',
-			'default' => 'select',
+			'default' => self::$default_settings['field_type'],
 			'css' => 'min-width:300px;',
 			'desc_tip' =>  true,
 			'options' => array(
-				'select' => __('Select', 'woocommerce'),
-				'radio' => __('Radio buttons', 'woocommerce')
+				'select' => __('Select', 'woocommerce')
 			)
 		);
 
 		// Billing salutation
 		foreach(array('billing', 'shipping') as $address_type) {
 			$fields_settings[] = array(
-				'title' => $address_type === 'billing' ? __('Billing Salutation', 'f4-wc-salutation-fields') : __('Shipping Salutation', 'f4-wc-salutation-fields'),
+				'title' => $address_type === 'billing' ? __('Billing address', 'woocommerce') : __('Shipping address', 'woocommerce'),
 				'desc' => '',
 				'id' => 'woocommerce_enable_' . $address_type . '_field_salutation',
 				'type' => 'select',
-				'default' => 'required',
+				'default' => self::$default_settings[$address_type . '_field_enabled'],
 				'css' => 'min-width:300px;',
 				'desc_tip' =>  true,
 				'options' => array(
@@ -401,8 +379,6 @@ class Hooks {
 	 * @since 1.0.0
 	 * @access public
 	 * @static
-	 *
-	 * @done
 	 */
 	public static function add_customer_meta_fields($fields) {
 		foreach(array('billing', 'shipping') as $address_type) {
@@ -432,13 +408,11 @@ class Hooks {
 	}
 
 	/**
-	 * Add fields to backend order address
+	 * Add fields to backend order addresses
 	 *
 	 * @since 1.0.0
 	 * @access public
 	 * @static
-	 *
-	 * @done
 	 */
 	public static function add_admin_order_fields($fields) {
 		$address_type = doing_filter('woocommerce_admin_billing_fields') ? 'billing' : 'shipping';
@@ -474,8 +448,6 @@ class Hooks {
 	 * @since 1.0.0
 	 * @access public
 	 * @static
-	 *
-	 * @done
 	 */
 	public static function add_settings_link_to_plugin_list($links) {
 		$links[] = '<a href="' . admin_url('admin.php?page=wc-settings&tab=account') . '">' . __('Settings') . '</a>';
@@ -488,16 +460,14 @@ class Hooks {
 	 * @since 1.0.0
 	 * @access public
 	 * @static
-	 *
-	 * @done
 	 */
 	public static function privacy_customer_personal_data_props($props, $customer) {
 		foreach(array('billing', 'shipping') as $address_type) {
 			if(self::$settings[$address_type . '_field_enabled'] !== 'hidden') {
 				if($address_type === 'billing') {
-					$prop_label = __('Billing Salutation', 'f4-wc-shipping-phone-email');
+					$prop_label = __('Billing Salutation', 'f4-wc-salutation-fields');
 				} else {
-					$prop_label = __('Shipping Salutation', 'f4-wc-shipping-phone-email');
+					$prop_label = __('Shipping Salutation', 'f4-wc-salutation-fields');
 				}
 
 				$props = \F4\WCSF\Core\Helpers::insert_before_key(
@@ -522,8 +492,6 @@ class Hooks {
 	 * @since 1.0.0
 	 * @access public
 	 * @static
-	 *
-	 * @done
 	 */
 	public static function privacy_export_customer_personal_data_prop_value($value, $prop, $customer) {
 		if($prop === 'billing_salutation') {
@@ -541,8 +509,6 @@ class Hooks {
 	 * @since 1.0.0
 	 * @access public
 	 * @static
-	 *
-	 * @done
 	 */
 	public static function privacy_erase_customer_personal_data_prop($erased, $prop, $customer) {
 		if($prop === 'billing_salutation') {
