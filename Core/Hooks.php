@@ -133,7 +133,7 @@ class Hooks {
 	 */
 	public static function get_option_label($key) {
 		$options = self::get_options();
-		return !empty($option) && isset($options[$key]) ? $options[$key] : '';
+		return !empty($key) && isset($options[$key]) ? $options[$key] : '';
 	}
 
 	/**
