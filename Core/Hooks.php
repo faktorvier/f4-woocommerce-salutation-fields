@@ -55,6 +55,7 @@ class Hooks {
 		add_filter('woocommerce_checkout_fields', __NAMESPACE__ . '\\Hooks::add_checkout_fields', 99);
 		add_filter('woocommerce_billing_fields', __NAMESPACE__ . '\\Hooks::add_address_fields', 99, 2);
 		add_filter('woocommerce_shipping_fields', __NAMESPACE__ . '\\Hooks::add_address_fields', 99, 2);
+		add_filter('woocommerce_my_account_my_address_formatted_address', __NAMESPACE__ . '\\Hooks::add_field_to_formatted_my_account_address', 99, 3);
 
 		// Formatted address
 		add_filter('woocommerce_order_formatted_billing_address', __NAMESPACE__ . '\\Hooks::add_field_to_formatted_address', 99, 2);
@@ -180,7 +181,7 @@ class Hooks {
 					array(
 						'label' => __('Salutation', 'f4-wc-salutation-fields'),
 						'required' => self::$settings[$address_type . '_field_enabled'] === 'required',
-						'type' => 'select',
+						'type' => self::$settings['field_type'],
 						'options' => self::get_options(),
 						'class' => array('form-row-wide'),
 						'autocomplete' => 'salutation',
@@ -219,7 +220,7 @@ class Hooks {
 				array(
 					'label' => __('Salutation', 'f4-wc-salutation-fields'),
 					'required' => self::$settings[$address_type . '_field_enabled'] === 'required',
-					'type' => 'select',
+					'type' => self::$settings['field_type'],
 					'options' => self::get_options(),
 					'class' => array('form-row-wide'),
 					'autocomplete' => 'salutation',
@@ -229,6 +230,23 @@ class Hooks {
 		}
 
 		return $address_fields;
+	}
+
+	/**
+	 * Add fields to edit address form
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @static
+	 *
+	 * @done
+	 */
+	public static function add_field_to_formatted_my_account_address($address, $customer_id, $address_type) {
+		if(self::$settings[$address_type . '_field_enabled'] !== 'hidden') {
+			$address['salutation'] = self::get_option_label(get_user_meta($customer_id, $address_type . '_salutation', true));
+		}
+
+		return $address;
 	}
 
 	/**
@@ -303,11 +321,71 @@ class Hooks {
 	 * @access public
 	 * @static
 	 *
-	 * @todo: settings enabled adden
-	 * @todo: settings field type adden
-	 * @todo prio 2: settings salutations adden
+	 * @done
 	 */
 	public static function add_settings_fields($settings) {
+		// Section start
+		$fields_settings = array(
+			array(
+				'title' => __('Salutation fields', 'f4-wc-salutation-fields'),
+				'type' => 'title',
+				'id' => 'salutation-fields'
+			)
+		);
+
+		// Field typ
+		$fields_settings[] = array(
+			'title' => __('Field type', 'f4-wc-salutation-fields'),
+			'desc' => '',
+			'id' => 'woocommerce_salutation_field_type',
+			'type' => 'select',
+			'default' => 'select',
+			'css' => 'min-width:300px;',
+			'desc_tip' =>  true,
+			'options' => array(
+				'select' => __('Select', 'woocommerce'),
+				'radio' => __('Radio buttons', 'woocommerce')
+			)
+		);
+
+		// Billing salutation
+		foreach(array('billing', 'shipping') as $address_type) {
+			$fields_settings[] = array(
+				'title' => $address_type === 'billing' ? __('Billing Salutation', 'f4-wc-salutation-fields') : __('Shipping Salutation', 'f4-wc-salutation-fields'),
+				'desc' => '',
+				'id' => 'woocommerce_enable_' . $address_type . '_field_salutation',
+				'type' => 'select',
+				'default' => 'required',
+				'css' => 'min-width:300px;',
+				'desc_tip' =>  true,
+				'options' => array(
+					'hidden' => __('Hidden', 'woocommerce'),
+					'optional' => __('Optional', 'woocommerce'),
+					'required' => __('Required', 'woocommerce')
+				)
+			);
+		}
+
+		// Section end
+		$fields_settings[] = array(
+			'type' => 'sectionend',
+			'id' => 'salutation-fields'
+		);
+
+		$fields_settings = apply_filters('F4/WCSF/settings_fields', $fields_settings);
+
+		// Insert after registration options
+		$insert_at_position = null;
+
+		foreach($settings as $index => $setting) {
+			if($setting['type'] === 'sectionend' && $setting['id'] === 'account_registration_options') {
+				$insert_at_position = $index;
+				break;
+			}
+		}
+
+		array_splice($settings, $insert_at_position + 1, 0, $fields_settings);
+
 		return $settings;
 	}
 
@@ -331,11 +409,11 @@ class Hooks {
 					),
 					array(
 						$address_type . '_salutation' => apply_filters(
-							'F4/WCSPE/customer_meta_field_' . $address_type . '_salutation',
+							'F4/WCSF/customer_meta_field_' . $address_type . '_salutation',
 							array(
 								'label' => __('Salutation', 'f4-wc-salutation-fields'),
 								'description' => '',
-								'type' => 'select',
+								'type' => self::$settings['field_type'],
 								'options' => self::get_options()
 							)
 						)
@@ -368,10 +446,10 @@ class Hooks {
 				),
 				array(
 					'salutation' => apply_filters(
-						'F4/WCSPE/admin_field_' . $address_type . '_salutation',
+						'F4/WCSF/admin_field_' . $address_type . '_salutation',
 						array(
 							'label' => __('Salutation', 'f4-wc-salutation-fields'),
-							'type' => 'select',
+							'type' => self::$settings['field_type'],
 							'wrapper_class' => 'form-field-wide',
 							'show' => false,
 							'options' => self::get_options()
