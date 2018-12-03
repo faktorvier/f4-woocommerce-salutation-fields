@@ -69,6 +69,12 @@ class Hooks {
 		add_filter('woocommerce_admin_billing_fields', __NAMESPACE__ . '\\Hooks::add_admin_order_fields', 99);
 		add_filter('woocommerce_admin_shipping_fields', __NAMESPACE__ . '\\Hooks::add_admin_order_fields', 99);
 		add_filter('plugin_action_links_' . F4_WCSF_BASENAME, __NAMESPACE__ . '\\Hooks::add_settings_link_to_plugin_list');
+
+		// Privacy
+		add_filter('woocommerce_privacy_export_customer_personal_data_props', __NAMESPACE__ . '\\Hooks::privacy_customer_personal_data_props', 99, 2);
+		add_filter('woocommerce_privacy_erase_customer_personal_data_props', __NAMESPACE__ . '\\Hooks::privacy_customer_personal_data_props', 99, 2);
+		add_filter('woocommerce_privacy_export_customer_personal_data_prop_value', __NAMESPACE__ . '\\Hooks::privacy_export_customer_personal_data_prop_value', 99, 3);
+		add_filter('woocommerce_privacy_erase_customer_personal_data_prop', __NAMESPACE__ . '\\Hooks::privacy_erase_customer_personal_data_prop', 99, 3);
 	}
 
 	/**
@@ -143,7 +149,7 @@ class Hooks {
 	 * @access public
 	 * @static
 	 *
-	 * @todo: settings dynamisch
+	 * @done
 	 */
 	public static function load_settings() {
 		$settings = array(
@@ -163,7 +169,7 @@ class Hooks {
 	 * @access public
 	 * @static
 	 *
-	 * @todo: select = select2
+	 * @done
 	 */
 	public static function add_checkout_fields($fields) {
 		foreach(array('billing', 'shipping') as $address_type) {
@@ -201,7 +207,7 @@ class Hooks {
 	 * @access public
 	 * @static
 	 *
-	 * @todo: select = select2
+	 * @done
 	 */
 	public static function add_address_fields($address_fields, $country) {
 		$address_type = doing_filter('woocommerce_billing_fields') ? 'billing' : 'shipping';
@@ -474,6 +480,78 @@ class Hooks {
 	public static function add_settings_link_to_plugin_list($links) {
 		$links[] = '<a href="' . admin_url('admin.php?page=wc-settings&tab=account') . '">' . __('Settings') . '</a>';
 		return $links;
+	}
+
+	/**
+	 * Add fields to the privacy customer data props
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @static
+	 *
+	 * @done
+	 */
+	public static function privacy_customer_personal_data_props($props, $customer) {
+		foreach(array('billing', 'shipping') as $address_type) {
+			if(self::$settings[$address_type . '_field_enabled'] !== 'hidden') {
+				if($address_type === 'billing') {
+					$prop_label = __('Billing Salutation', 'f4-wc-shipping-phone-email');
+				} else {
+					$prop_label = __('Shipping Salutation', 'f4-wc-shipping-phone-email');
+				}
+
+				$props = \F4\WCSF\Core\Helpers::insert_before_key(
+					$props,
+					array(
+						$address_type . '_first_name',
+						$address_type . '_last_name'
+					),
+					array(
+						$address_type . '_salutation' => $prop_label
+					)
+				);
+			}
+		}
+
+		return $props;
+	}
+
+	/**
+	 * Get privacy customer data props values
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @static
+	 *
+	 * @done
+	 */
+	public static function privacy_export_customer_personal_data_prop_value($value, $prop, $customer) {
+		if($prop === 'billing_salutation') {
+			$value = self::get_option_label($customer->get_meta('billing_salutation'));
+		} elseif($prop === 'shipping_salutation') {
+			$value = self::get_option_label($customer->get_meta('shipping_salutation'));
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Remove privacy customer data props values
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @static
+	 *
+	 * @done
+	 */
+	public static function privacy_erase_customer_personal_data_prop($erased, $prop, $customer) {
+		if($prop === 'billing_salutation') {
+			$customer->delete_meta_data('billing_salutation');
+		} elseif($prop === 'shipping_salutation') {
+			$customer->delete_meta_data('shipping_salutation');
+		}
+
+		return $erased;
 	}
 }
 
