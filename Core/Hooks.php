@@ -51,7 +51,6 @@ class Hooks {
 		add_action('init', __NAMESPACE__ . '\\Hooks::load_settings', 11);
 
 		// Checkout and account fields
-		add_filter('woocommerce_checkout_fields', __NAMESPACE__ . '\\Hooks::add_checkout_fields');
 		add_filter('woocommerce_billing_fields', __NAMESPACE__ . '\\Hooks::add_address_fields', 10, 2);
 		add_filter('woocommerce_shipping_fields', __NAMESPACE__ . '\\Hooks::add_address_fields', 10, 2);
 		add_filter('woocommerce_my_account_my_address_formatted_address', __NAMESPACE__ . '\\Hooks::add_field_to_formatted_my_account_address', 10, 3);
@@ -153,42 +152,6 @@ class Hooks {
 				'option_values' => get_option('woocommerce_salutation_options', self::$default_settings['option_values'])
 			)
 		);
-	}
-
-	/**
-	 * Add fields to the checkout address forms
-	 *
-	 * @since 1.0.0
-	 * @access public
-	 * @static
-	 */
-	public static function add_checkout_fields($fields) {
-		foreach(array('billing', 'shipping') as $address_type) {
-			if(self::$settings[$address_type . '_field_enabled'] !== 'hidden') {
-				$name_field_priority = \F4\WCSF\Core\Helpers::get_field_priority(
-					$fields[$address_type],
-					array(
-						$address_type . '_first_name',
-						$address_type . '_last_name'
-					)
-				);
-
-				$fields[$address_type][$address_type . '_salutation'] = apply_filters(
-					'F4/WCSF/checkout_' . $address_type . '_field_salutation',
-					array(
-						'label' => __('Salutation', 'f4-wc-salutation-fields'),
-						'required' => self::$settings[$address_type . '_field_enabled'] === 'required',
-						'type' => self::$settings['field_type'],
-						'options' => self::get_options(),
-						'class' => array('form-row-wide'),
-						'autocomplete' => 'salutation',
-						'priority' => $name_field_priority - 1
-					)
-				);
-			}
-		}
-
-		return $fields;
 	}
 
 	/**
