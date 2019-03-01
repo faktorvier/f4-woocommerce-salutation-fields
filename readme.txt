@@ -3,7 +3,7 @@ Contributors: faktorvier
 Donate link: https://www.faktorvier.ch/
 Tags: woocommerce, checkout, address, salutation, field, billing, shipping, fields, shop, ecommerce, order, account
 Requires at least: 4.4.0
-Tested up to: 4.9.8
+Tested up to: 5.0
 Requires PHP: 5.6
 Stable tag: 1.0.1
 License: GPLv2
