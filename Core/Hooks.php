@@ -215,7 +215,7 @@ class Hooks {
 	public static function add_field_to_formatted_address($address, $order) {
 		$address_type = doing_filter('woocommerce_order_formatted_billing_address') ? 'billing' : 'shipping';
 
-		if(self::$settings[$address_type . '_field_enabled'] !== 'hidden') {
+		if(is_array($address) && self::$settings[$address_type . '_field_enabled'] !== 'hidden') {
 			$address['salutation'] = self::get_option_label(get_post_meta($order->get_id(), '_' . $address_type . '_salutation', true));
 		}
 
@@ -252,7 +252,7 @@ class Hooks {
 	 * @static
 	 */
 	public static function replace_field_in_formatted_address($replace, $args) {
-		if(self::$settings['billing_field_enabled'] !== 'hidden' || self::$settings['shipping_field_enabled'] !== 'hidden') {
+		if(is_array($args) && self::$settings['billing_field_enabled'] !== 'hidden' || self::$settings['shipping_field_enabled'] !== 'hidden') {
 			if(isset($args['salutation'])) {
 				$replace['{salutation}'] = $args['salutation'];
 				$replace['{salutation_upper}'] = strtoupper($args['salutation']);
