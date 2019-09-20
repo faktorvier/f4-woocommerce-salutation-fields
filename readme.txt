@@ -3,7 +3,7 @@ Contributors: faktorvier
 Donate link: https://www.faktorvier.ch/
 Tags: woocommerce, checkout, address, salutation, field, billing, shipping, fields, shop, ecommerce, order, account
 Requires at least: 4.4.0
-Tested up to: 5.1
+Tested up to: 5.2
 Requires PHP: 5.6
 Stable tag: 1.0.1
 License: GPLv2
@@ -75,6 +75,9 @@ If you want to add more salutations, change the labels or add your own translati
 7. Field configuration in WooCommerce settings
 
 == Changelog ==
+
+= 1.0.1 =
+* Fix formatted output
 
 = 1.0.0 =
 * Initial stable release
