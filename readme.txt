@@ -1,6 +1,6 @@
-=== F4 WooCommerce Salutation Fields ===
+=== F4 Salutation Fields for WooCommerce ===
 Contributors: faktorvier
-Donate link: https://www.faktorvier.ch/
+Donate link: https://www.faktorvier.ch/donate/
 Tags: woocommerce, checkout, address, salutation, field, billing, shipping, fields, shop, ecommerce, order, account
 Requires at least: 4.4.0
 Tested up to: 5.2
@@ -13,7 +13,7 @@ Adds salutation fields to the WooCommerce billing and shipping address.
 
 == Description ==
 
-F4 WooCommerce Salutation Fields adds a dropdown menu (more field types coming soon) to select the address salutation to the billing and/or shipping address.
+F4 Salutation Fields for WooCommerce adds a dropdown menu (more field types coming soon) to select the address salutation to the billing and/or shipping address.
 The plugin prepends the salutation automatically before the name in every formatted address output. Here are a few more things the plugin does:
 
 * Adds salutation fields to the billing and/or shipping address checkout form

@@ -1,7 +1,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: F4 WooCommerce Salutation Fields\n"
+"Project-Id-Version: F4 Salutation Fields for WooCommerce\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-12-03 23:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -40,7 +40,7 @@ msgid "Shipping Salutation"
 msgstr ""
 
 #. Name of the plugin
-msgid "F4 WooCommerce Salutation Fields"
+msgid "F4 Salutation Fields for WooCommerce"
 msgstr ""
 
 #. Description of the plugin

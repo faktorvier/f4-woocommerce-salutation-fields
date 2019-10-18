@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: F4 WooCommerce Salutation Fields\n"
+"Project-Id-Version: F4 Salutation Fields for WooCommerce\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-12-03 22:39+0000\n"
 "PO-Revision-Date: 2018-12-03 22:51+0000\n"
@@ -24,8 +24,8 @@ msgid "Billing Salutation"
 msgstr "Rechnung Anrede"
 
 #. Name of the plugin
-msgid "F4 WooCommerce Salutation Fields"
-msgstr "F4 WooCommerce Salutation Fields"
+msgid "F4 Salutation Fields for WooCommerce"
+msgstr "F4 Salutation Fields for WooCommerce"
 
 #. Author of the plugin
 msgid "FAKTOR VIER"
