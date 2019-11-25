@@ -12,7 +12,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: f4-wc-salutation-fields
 Domain Path: /Core/Lang
 WC requires at least: 3.0
-WC tested up to: 3.5.1
+WC tested up to: 3.8.0
 
 This plugin is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
