@@ -70,9 +70,10 @@ class Hooks {
 
 		// Privacy
 		add_filter('woocommerce_privacy_export_customer_personal_data_props', __NAMESPACE__ . '\\Hooks::privacy_customer_personal_data_props', 10, 2);
-		add_filter('woocommerce_privacy_erase_customer_personal_data_props', __NAMESPACE__ . '\\Hooks::privacy_customer_personal_data_props', 10, 2);
 		add_filter('woocommerce_privacy_export_customer_personal_data_prop_value', __NAMESPACE__ . '\\Hooks::privacy_export_customer_personal_data_prop_value', 10, 3);
+		add_filter('woocommerce_privacy_erase_customer_personal_data_props', __NAMESPACE__ . '\\Hooks::privacy_customer_personal_data_props', 10, 2);
 		add_filter('woocommerce_privacy_erase_customer_personal_data_prop', __NAMESPACE__ . '\\Hooks::privacy_erase_customer_personal_data_prop', 10, 3);
+		add_action('woocommerce_privacy_remove_order_personal_data_meta', __NAMESPACE__ . '\\Hooks::privacy_remove_order_personal_data_meta');
 	}
 
 	/**
@@ -481,6 +482,20 @@ class Hooks {
 		}
 
 		return $erased;
+	}
+
+	/**
+	 * Remove privacy order data meta
+	 *
+	 * @since 1.0.3
+	 * @access public
+	 * @static
+	 */
+	public static function privacy_remove_order_personal_data_meta($meta) {
+		$meta['_billing_salutation'] = 'text';
+		$meta['_shipping_salutation'] = 'text';
+
+		return $meta;
 	}
 }
 
