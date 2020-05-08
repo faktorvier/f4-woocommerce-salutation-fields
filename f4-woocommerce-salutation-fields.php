@@ -9,8 +9,8 @@ Author: FAKTOR VIER
 Author URI: https://www.faktorvier.ch
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Text Domain: f4-wc-salutation-fields
-Domain Path: /Core/Lang
+Text Domain: f4-woocommerce-salutation-fields
+Domain Path: /languages/
 WC requires at least: 3.0
 WC tested up to: 4.0
 
@@ -32,7 +32,6 @@ along with this plugin. If not, see https://www.gnu.org/licenses/gpl-2.0.html.
 if(!defined('ABSPATH')) exit; // don't access directly
 
 define('F4_WCSF_VERSION', '1.0.3');
-define('F4_WCSF_PRO', false);
 
 define('F4_WCSF_SLUG', 'f4-woocommerce-salutation-fields');
 define('F4_WCSF_MAIN_FILE', __FILE__);
@@ -42,15 +41,18 @@ define('F4_WCSF_URL', plugins_url('/', F4_WCSF_MAIN_FILE));
 define('F4_WCSF_PLUGIN_FILE', basename(F4_WCSF_BASENAME));
 define('F4_WCSF_PLUGIN_FILE_PATH', F4_WCSF_PATH . F4_WCSF_PLUGIN_FILE);
 
+// Add autoloader
 spl_autoload_register(function($class) {
 	$class = ltrim($class, '\\');
 	$ns_prefix = 'F4\\WCSF\\';
 
-	if(strpos($class, $ns_prefix) !== 0) return;
+	if(strpos($class, $ns_prefix) !== 0) {
+		return;
+	}
 
 	$class_name = str_replace($ns_prefix, '', $class);
 	$class_path = str_replace('\\', DIRECTORY_SEPARATOR, $class_name);
-	$class_file = F4_WCSF_PATH . $class_path . '.php';
+	$class_file = F4_WCSF_PATH . 'modules' . DIRECTORY_SEPARATOR . $class_path . '.php';
 
 	if(file_exists($class_file)) {
 		require_once $class_file;

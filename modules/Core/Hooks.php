@@ -84,8 +84,7 @@ class Hooks {
 	 * @static
 	 */
 	public static function load_textdomain() {
-		$locale = apply_filters('plugin_locale', get_locale(), 'f4-wc-salutation-fields');
-		load_plugin_textdomain('f4-wc-salutation-fields', false, plugin_basename(F4_WCSF_PATH . 'Core/Lang') . '/');
+		load_plugin_textdomain('f4-woocommerce-salutation-fields', false, plugin_basename(F4_WCSF_PATH . 'languages') . '/');
 	}
 
 	/**
@@ -107,11 +106,11 @@ class Hooks {
 						break;
 
 					case 'mr':
-						$options[$value] = __('Mr.', 'f4-wc-salutation-fields');
+						$options[$value] = __('Mr.', 'f4-woocommerce-salutation-fields');
 						break;
 
 					case 'mrs':
-						$options[$value] = __('Mrs.', 'f4-wc-salutation-fields');
+						$options[$value] = __('Mrs.', 'f4-woocommerce-salutation-fields');
 						break;
 				}
 			}
@@ -177,7 +176,7 @@ class Hooks {
 			$address_fields[$address_type . '_salutation'] = apply_filters(
 				'F4/WCSF/address_' . $address_type . '_field_salutation',
 				array(
-					'label' => __('Salutation', 'f4-wc-salutation-fields'),
+					'label' => __('Salutation', 'f4-woocommerce-salutation-fields'),
 					'required' => self::$settings[$address_type . '_field_enabled'] === 'required',
 					'type' => self::$settings['field_type'],
 					'options' => self::get_options(),
@@ -276,7 +275,7 @@ class Hooks {
 		// Section start
 		$fields_settings = array(
 			array(
-				'title' => __('Salutation fields', 'f4-wc-salutation-fields'),
+				'title' => __('Salutation fields', 'f4-woocommerce-salutation-fields'),
 				'type' => 'title',
 				'id' => 'salutation-fields'
 			)
@@ -357,7 +356,7 @@ class Hooks {
 						$address_type . '_salutation' => apply_filters(
 							'F4/WCSF/customer_meta_field_' . $address_type . '_salutation',
 							array(
-								'label' => __('Salutation', 'f4-wc-salutation-fields'),
+								'label' => __('Salutation', 'f4-woocommerce-salutation-fields'),
 								'description' => '',
 								'type' => self::$settings['field_type'],
 								'options' => self::get_options()
@@ -392,7 +391,7 @@ class Hooks {
 					'salutation' => apply_filters(
 						'F4/WCSF/admin_field_' . $address_type . '_salutation',
 						array(
-							'label' => __('Salutation', 'f4-wc-salutation-fields'),
+							'label' => __('Salutation', 'f4-woocommerce-salutation-fields'),
 							'type' => self::$settings['field_type'],
 							'wrapper_class' => 'form-field-wide',
 							'show' => false,
@@ -429,9 +428,9 @@ class Hooks {
 		foreach(array('billing', 'shipping') as $address_type) {
 			if(self::$settings[$address_type . '_field_enabled'] !== 'hidden') {
 				if($address_type === 'billing') {
-					$prop_label = __('Billing Salutation', 'f4-wc-salutation-fields');
+					$prop_label = __('Billing Salutation', 'f4-woocommerce-salutation-fields');
 				} else {
-					$prop_label = __('Shipping Salutation', 'f4-wc-salutation-fields');
+					$prop_label = __('Shipping Salutation', 'f4-woocommerce-salutation-fields');
 				}
 
 				$props = \F4\WCSF\Core\Helpers::insert_before_key(
