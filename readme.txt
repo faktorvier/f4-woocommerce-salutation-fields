@@ -5,7 +5,7 @@ Tags: woocommerce, checkout, address, salutation, field, billing, shipping, fiel
 Requires at least: 4.4.0
 Tested up to: 5.4
 Requires PHP: 7.0
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -75,6 +75,9 @@ If you want to add more salutations, change the labels or add your own translati
 7. Field configuration in WooCommerce settings
 
 == Changelog ==
+
+= 1.0.5 =
+* Update translations
 
 = 1.0.4 =
 * Support WooCommerce 4.0
