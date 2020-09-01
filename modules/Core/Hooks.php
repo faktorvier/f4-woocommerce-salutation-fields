@@ -54,6 +54,8 @@ class Hooks {
 		add_filter('woocommerce_billing_fields', __NAMESPACE__ . '\\Hooks::add_address_fields', 10, 2);
 		add_filter('woocommerce_shipping_fields', __NAMESPACE__ . '\\Hooks::add_address_fields', 10, 2);
 		add_filter('woocommerce_my_account_my_address_formatted_address', __NAMESPACE__ . '\\Hooks::add_field_to_formatted_my_account_address', 10, 3);
+		add_action('woocommerce_after_checkout_validation', __NAMESPACE__ . '\\Hooks::set_guest_checkout_session_props');
+		add_filter('woocommerce_checkout_get_value', __NAMESPACE__ . '\\Hooks::get_guest_checkout_field_values', 10, 2);
 
 		// Formatted address
 		add_filter('woocommerce_order_formatted_billing_address', __NAMESPACE__ . '\\Hooks::add_field_to_formatted_address', 10, 2);
@@ -203,6 +205,42 @@ class Hooks {
 		}
 
 		return $address;
+	}
+
+	/**
+	 * Set checkout session props for guests
+	 *
+	 * @since 1.0.7
+	 * @access public
+	 * @static
+	 */
+	public static function set_guest_checkout_session_props($data) {
+		if(is_user_logged_in()) {
+			return;
+		}
+
+		if(isset($data['billing_salutation'])) {
+			WC()->session->set('billing_salutation', wc_clean(wp_unslash($data['billing_salutation'])));
+		}
+
+		if(isset($data['shipping_salutation'])) {
+			WC()->session->set('shipping_salutation', wc_clean(wp_unslash($data['shipping_salutation'])));
+		}
+	}
+
+	/**
+	 * Get checkout field values for guests
+	 *
+	 * @since 1.0.7
+	 * @access public
+	 * @static
+	 */
+	public static function get_guest_checkout_field_values($value, $input) {
+		if(!is_null($value) || !in_array($input, ['billing_salutation', 'shipping_salutation']) || is_user_logged_in()) {
+			return $value;
+		}
+
+		return WC()->session->get($input);
 	}
 
 	/**
