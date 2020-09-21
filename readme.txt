@@ -76,6 +76,9 @@ If you want to add more salutations, change the labels or add your own translati
 
 == Changelog ==
 
+= 1.0.7 =
+* Save guest checkout fields in session
+
 = 1.0.6 =
 * Support WooCommerce 4.4
 * Support WordPress 5.5
