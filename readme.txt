@@ -5,7 +5,7 @@ Tags: woocommerce, checkout, address, salutation, field, billing, shipping, fiel
 Requires at least: 5.0
 Tested up to: 5.5
 Requires PHP: 7.0
-Stable tag: 1.0.6
+Stable tag: 1.0.7
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
