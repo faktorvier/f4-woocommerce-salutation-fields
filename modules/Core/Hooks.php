@@ -268,14 +268,16 @@ class Hooks {
 	 * @static
 	 */
 	public static function append_field_to_localisation_address_formats($formats) {
-		if(self::$settings['billing_field_enabled'] !== 'hidden' || self::$settings['shipping_field_enabled'] !== 'hidden') {
-			foreach($formats as $country => &$format) {
-				$format = preg_replace(
-					'/\{(name|name_uppercase|first_name|first_name_uppercase|last_name|last_name_uppercase)\}/im',
-					'{salutation} {$1}',
-					$format,
-					1
-				);
+		if(isset(self::$settings['billing_field_enabled'])) {
+			if(self::$settings['billing_field_enabled'] !== 'hidden' || self::$settings['shipping_field_enabled'] !== 'hidden') {
+				foreach($formats as $country => &$format) {
+					$format = preg_replace(
+						'/\{(name|name_uppercase|first_name|first_name_uppercase|last_name|last_name_uppercase)\}/im',
+						'{salutation} {$1}',
+						$format,
+						1
+					);
+				}
 			}
 		}
 
@@ -290,12 +292,14 @@ class Hooks {
 	 * @static
 	 */
 	public static function replace_field_in_formatted_address($replace, $args) {
-		if((self::$settings['billing_field_enabled'] !== 'hidden' || self::$settings['shipping_field_enabled'] !== 'hidden')) {
-			if(isset($args['salutation'])) {
-				$replace['{salutation}'] = $args['salutation'];
-				$replace['{salutation_upper}'] = strtoupper($args['salutation']);
-			} else {
-				$replace['{salutation_upper}'] = $replace['{salutation}'] = '';
+		if(isset(self::$settings['billing_field_enabled'])) {
+			if((self::$settings['billing_field_enabled'] !== 'hidden' || self::$settings['shipping_field_enabled'] !== 'hidden')) {
+				if(isset($args['salutation'])) {
+					$replace['{salutation}'] = $args['salutation'];
+					$replace['{salutation_upper}'] = strtoupper($args['salutation']);
+				} else {
+					$replace['{salutation_upper}'] = $replace['{salutation}'] = '';
+				}
 			}
 		}
 
