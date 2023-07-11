@@ -46,6 +46,8 @@ class Hooks {
 		do_action('F4/WCSF/Core/set_constants');
 		do_action('F4/WCSF/Core/loaded');
 
+		add_action('before_woocommerce_init', __NAMESPACE__ . '\\Hooks::declare_woocommerce_compatibilities');
+
 		// Load settings
 		add_action('init', __NAMESPACE__ . '\\Hooks::load_textdomain');
 		add_action('init', __NAMESPACE__ . '\\Hooks::load_settings', 11);
@@ -76,6 +78,20 @@ class Hooks {
 		add_filter('woocommerce_privacy_erase_customer_personal_data_props', __NAMESPACE__ . '\\Hooks::privacy_customer_personal_data_props', 10, 2);
 		add_filter('woocommerce_privacy_erase_customer_personal_data_prop', __NAMESPACE__ . '\\Hooks::privacy_erase_customer_personal_data_prop', 10, 3);
 		add_action('woocommerce_privacy_remove_order_personal_data_meta', __NAMESPACE__ . '\\Hooks::privacy_remove_order_personal_data_meta');
+	}
+
+	/**
+	 * Declare WooCommerce compatibilities.
+	 *
+	 * @since 1.0.17
+	 * @access public
+	 * @static
+	 */
+	public static function declare_woocommerce_compatibilities() {
+		if(class_exists(\Automattic\WooCommerce\Utilities\FeaturesUtil::class)) {
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility('custom_order_tables', F4_WCSF_MAIN_FILE, true);
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility('product_block_editor', F4_WCSF_MAIN_FILE, true);
+		}
 	}
 
 	/**
@@ -253,8 +269,8 @@ class Hooks {
 	public static function add_field_to_formatted_address($address, $order) {
 		$address_type = doing_filter('woocommerce_order_formatted_billing_address') ? 'billing' : 'shipping';
 
-		if(self::$settings[$address_type . '_field_enabled'] !== 'hidden' && is_array($address)) {
-			$address['salutation'] = self::get_option_label(get_post_meta($order->get_id(), '_' . $address_type . '_salutation', true));
+		if(self::$settings["{$address_type}_field_enabled"] !== 'hidden' && is_array($address)) {
+			$address['salutation'] = self::get_option_label($order->get_meta("_{$address_type}_salutation"));
 		}
 
 		return $address;
