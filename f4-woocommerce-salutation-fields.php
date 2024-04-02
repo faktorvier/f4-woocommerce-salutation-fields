@@ -4,15 +4,16 @@
 Plugin Name: F4 Salutation Fields for WooCommerce
 Plugin URI: https://github.com/faktorvier/f4-woocommerce-salutation-fields
 Description: Adds salutation fields to the WooCommerce billing and shipping address.
-Version: 1.0.18
+Version: 1.0.19
 Author: FAKTOR VIER
 Author URI: https://www.f4dev.ch
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: f4-woocommerce-salutation-fields
 Domain Path: /languages/
+Requires Plugins: woocommerce
 WC requires at least: 3.0
-WC tested up to: 8.1
+WC tested up to: 8.7
 
 This plugin is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -31,7 +32,7 @@ along with this plugin. If not, see https://www.gnu.org/licenses/gpl-2.0.html.
 
 if(!defined('ABSPATH')) exit; // don't access directly
 
-define('F4_WCSF_VERSION', '1.0.18');
+define('F4_WCSF_VERSION', '1.0.19');
 
 define('F4_WCSF_SLUG', 'f4-woocommerce-salutation-fields');
 define('F4_WCSF_MAIN_FILE', __FILE__);
